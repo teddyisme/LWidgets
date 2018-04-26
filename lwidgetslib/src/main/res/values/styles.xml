@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <declare-styleable name="LPaddingEdiTextView">
+        <attr name="LPaddingViewType" format="string" />
+        <attr name="LPaddingViewSpacingNumber" format="string" />
+    </declare-styleable>
+</resources>
