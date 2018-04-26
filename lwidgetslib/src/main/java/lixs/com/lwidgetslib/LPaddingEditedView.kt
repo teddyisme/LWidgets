@@ -12,11 +12,6 @@ import android.widget.EditText
  */
 class LPaddingEditedView(context: Context?, attrs: AttributeSet?) : EditText(context, attrs) {
     private var lstr = StringBuilder()
-    /**
-     * tel 手机号
-     * bankCode 银行卡号
-     * idCard 身份证号
-     */
     private var lType: String? = null
     private var spaceNumber: Int? = 1
 
