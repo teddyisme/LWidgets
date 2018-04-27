@@ -2,7 +2,7 @@
 整理的在工作中使用的小组件库，采用kotlin编码。
 
 ### 使用
-> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0'
+> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.1'
 
 #### 1、LpaddingEditedView 
 输入时添加电话、银行卡空格的编辑框
