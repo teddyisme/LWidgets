@@ -4,8 +4,10 @@
 ### 使用
 > implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.3'
 
-#### 1、LpaddingEditedView
-输入时添加电话、银行卡空格的编辑框
+#### 1、LEditedView
+- 输入时添加电话、银行卡空格
+- 可设置空格格式
+- 清除按钮的设置
 ```
 <lixs.com.lwidgetslib.LEditedView
         android:id="@+id/paddingview"
