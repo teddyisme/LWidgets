@@ -142,7 +142,7 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        if (clearButtonShowType == ClearButtonShowType.ALWAYS.name || (clearButtonShowType == ClearButtonShowType.INPUTTING.name && length() > 0)) {
+        if (isHaveClearButton()) {
             canvas?.drawBitmap(mClearButton, null, mClearBtnDecRect, mPaint)
         }
     }
@@ -219,17 +219,20 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when (event?.action) {
-            MotionEvent.ACTION_UP -> {
-                if (event.x - mClearBtnDecRect.left >= 0) {
-                    OnClearListen()
-                    setText("")
+        if (isHaveClearButton()) {
+            when (event?.action) {
+                MotionEvent.ACTION_UP -> {
+                    if (event.x - mClearBtnDecRect.left >= 0) {
+                        OnClearListen()
+                        setText("")
+                    }
                 }
             }
         }
-
         return super.onTouchEvent(event)
     }
 
-
+    private fun isHaveClearButton(): Boolean {
+        return clearButtonShowType == ClearButtonShowType.ALWAYS.name || (clearButtonShowType == ClearButtonShowType.INPUTTING.name && length() > 0)
+    }
 }
