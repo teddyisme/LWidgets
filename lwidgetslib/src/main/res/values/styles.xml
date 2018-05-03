@@ -1,8 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <declare-styleable name="LPaddingEdiTextView">
+    <declare-styleable name="LEdiTextView">
         <attr name="LPaddingViewType" format="string" />
         <attr name="LPaddingViewSpacingNumber" format="string" />
+        <attr name="clearButtonShowType" format="string" />
+        <attr name="clearButtonDrawable" format="reference" />
+        <attr name="clearButtonRightPadding" format="dimension" />
+        <attr name="clearButtonImageScale" format="float" />
     </declare-styleable>
 </resources>

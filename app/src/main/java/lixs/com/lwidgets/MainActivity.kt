@@ -10,7 +10,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         paddingview.setInputListens({ s: String, s1: String -> Log.d(TAG1, "s$s  s1:$s1") })
+
+        paddingview.setOnClearListens({
+            Log.d(TAG1, "clear")
+        })
         btn.setOnClickListener { Log.d(TAG1, paddingview.getContentString()) }
     }
 }

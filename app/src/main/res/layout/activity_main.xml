@@ -4,18 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical"
     tools:context=".MainActivity">
-   <lixs.com.lwidgetslib.LPaddingEditedView
-       android:id="@+id/paddingview"
-       android:layout_width="match_parent"
-       android:layout_height="50dp"
-       app:LPaddingViewType="bankCode"/>
 
-   <Button
-       android:id="@+id/btn"
-       android:layout_width="100dp"
-       android:layout_height="40dp"
-       android:text="按钮"/>
+    <lixs.com.lwidgetslib.LEditedView
+        android:id="@+id/paddingview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:maxLength="11"
+        android:inputType="number"
+        app:LPaddingViewType="TEL"
+        app:clearButtonDrawable="@mipmap/ico_circle_close"
+        app:clearButtonImageScale="1"
+        app:clearButtonRightPadding="12dp"
+        app:clearButtonShowType="INPUTTING" />
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="按钮" />
 
 </LinearLayout>
