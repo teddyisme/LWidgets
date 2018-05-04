@@ -5,7 +5,10 @@ import android.content.res.TypedArray
 import android.graphics.*
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputType
 import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.EditText
@@ -15,13 +18,46 @@ import android.widget.EditText
  * @author  XinSheng
  */
 open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(context, attrs) {
+    /**
+     * 输入的文字
+     */
     private var lstr = StringBuilder()
+    /**
+     * 添加空格格式类型
+     */
     private var lType: String? = null
+    /**
+     * 右边按钮类型
+     */
+    private var rightBtnType: String? = null
+    /**
+     * 设置的空格数目
+     */
     private var spaceNumber: Int = 1
+    /**
+     * 按钮距离右边距离
+     */
     private var buttonRightPadding: Int = 1
+    /**
+     * 按钮缩放比例
+     */
     private var buttonScale: Float = 1f
-
-    private var mClearButton: Bitmap? = null
+    /**
+     * 右边按钮资源
+     */
+    private var mRightButton: Bitmap? = null
+    /**
+     * 切换按钮默认图片资源
+     */
+    private var mRightButtonToggleDefault: Bitmap? = null
+    /**
+     * 切换选中按钮图片资源
+     */
+    private var mRightButtonToggleChecked: Bitmap? = null
+    /**
+     * 切换按钮值
+     */
+    private var toggleValue: Boolean = false
 
     private var mPaint: Paint = Paint()
 
@@ -34,8 +70,6 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
     private var mWidth: Int = 0
     private var mHeight: Int = 0
 
-    private var mMaxLength: Int? = 0
-
     enum class ClearButtonShowType {
         NEVER,//不显示清除按钮
         ALWAYS,//一直显示清除按钮
@@ -47,17 +81,28 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         BANKCODE//银行卡号格式 每隔四位添加一个空格
     }
 
+    enum class RightBtnType {
+        CLEARED,//清除按钮类型
+        TOGGLE,//点击切换模式
+        TOGGLE_PASSWORD//点击切换密码\明文
+    }
+
     private var clearButtonShowType: String? = "ALWAYS"
 
     private lateinit var InputListen: (String, String) -> Unit
-    private lateinit var OnClearListen: () -> Unit
+    private lateinit var OnRightClickListen: () -> Unit
+    private lateinit var OnRightToggledListen: (Boolean) -> Unit
 
     fun setInputListens(listener: (String, String) -> Unit) {
         this.InputListen = listener
     }
 
-    fun setOnClearListens(listener: () -> Unit) {
-        this.OnClearListen = listener
+    fun setOnRightListens(listener: () -> Unit) {
+        this.OnRightClickListen = listener
+    }
+
+    fun setOnRightToggleListens(listener: (Boolean) -> Unit) {
+        this.OnRightToggledListen = listener
     }
 
     private val textWatcher = object : TextWatcher {
@@ -142,8 +187,29 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        when (rightBtnType) {
+            RightBtnType.TOGGLE_PASSWORD.name -> { //点击切换密码模式
+                drawToggleButton(canvas)
+            }
+            RightBtnType.CLEARED.name -> {//清除按钮模式
+                if (isHaveClearButton()) {
+                    canvas?.drawBitmap(mRightButton, null, mClearBtnDecRect, mPaint)
+                }
+            }
+            RightBtnType.TOGGLE.name -> {//点击切换响应模式
+                drawToggleButton(canvas)
+            }
+
+        }
+    }
+
+    private fun drawToggleButton(canvas: Canvas?) {
         if (isHaveClearButton()) {
-            canvas?.drawBitmap(mClearButton, null, mClearBtnDecRect, mPaint)
+            if (toggleValue) {
+                canvas?.drawBitmap(mRightButtonToggleChecked, null, mClearBtnDecRect, mPaint)
+            } else {
+                canvas?.drawBitmap(mRightButtonToggleDefault, null, mClearBtnDecRect, mPaint)
+            }
         }
     }
 
@@ -163,22 +229,30 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         this.addTextChangedListener(textWatcher)
         val ta: TypedArray = context!!.obtainStyledAttributes(attrs, R.styleable.LEdiTextView)
         lType = ta.getString(R.styleable.LEdiTextView_LPaddingViewType)
-        clearButtonShowType = ta.getString(R.styleable.LEdiTextView_clearButtonShowType)
+        rightBtnType = ta.getString(R.styleable.LEdiTextView_rightButtonType)
+        clearButtonShowType = ta.getString(R.styleable.LEdiTextView_rightButtonShowType)
         spaceNumber = ta.getInt(R.styleable.LEdiTextView_LPaddingViewSpacingNumber, 0)
-        buttonRightPadding = ta.getDimension(R.styleable.LEdiTextView_clearButtonRightPadding, -1f).toInt()
-        buttonScale = ta.getFloat(R.styleable.LEdiTextView_clearButtonImageScale, 1f)
-        val clearButton = ta.getResourceId(R.styleable.LEdiTextView_clearButtonDrawable, android.R.drawable.ic_delete)
-        mClearButton = BitmapFactory.decodeResource(resources, clearButton)
+        buttonRightPadding = ta.getDimension(R.styleable.LEdiTextView_rightButtonRightPadding, -1f).toInt()
+        buttonScale = ta.getFloat(R.styleable.LEdiTextView_rightButtonImageScale, 1f)
+
+        val rightButton = ta.getResourceId(R.styleable.LEdiTextView_rightButtonDrawable, android.R.drawable.ic_delete)
+        mRightButton = BitmapFactory.decodeResource(resources, rightButton)
+
+        mRightButtonToggleDefault = BitmapFactory.decodeResource(resources,
+                ta.getResourceId(R.styleable.LEdiTextView_rightToggleDrawableDefault, android.R.drawable.ic_delete))
+        mRightButtonToggleChecked = BitmapFactory.decodeResource(resources,
+                ta.getResourceId(R.styleable.LEdiTextView_rightToggleDrawableChecked, android.R.drawable.ic_delete))
 
         val namespace = "http://schemas.android.com/apk/res/android"
         val maxLength = attrs?.getAttributeIntValue(namespace, "maxLength", -1) ?: -1
         ta.recycle()
-
         if (maxLength > -1) {
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(getMaxLenght(maxLength)))
         }
-        OnClearListen = {}
-        InputListen = { _, _ -> {} }
+
+        OnRightClickListen = {}
+        InputListen = { _, _ -> run {} }
+        OnRightToggledListen = { _ -> run {} }
         mPaint.isAntiAlias = true
         mPaint.style = Paint.Style.FILL
     }
@@ -206,30 +280,64 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         return max
     }
 
+    private fun isTogglePasswordMode(): Boolean {
+        return inputType == (InputType.TYPE_CLASS_NUMBER + InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+                || inputType == (InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD)
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         mWidth = measuredWidth
         mHeight = measuredHeight
-        val btnW = (mClearButton?.width ?: 0) * buttonScale
-        val btnH = (mClearButton?.height ?: 0) * buttonScale
-        if (buttonRightPadding == -1) {
+        var btnW = 0f
+        var btnH = 0f
+        if (rightBtnType == RightBtnType.TOGGLE_PASSWORD.name || rightBtnType == RightBtnType.TOGGLE.name) {
+            btnW = (mRightButtonToggleDefault?.width ?: 0) * buttonScale
+            btnH = (mRightButtonToggleDefault?.height ?: 0) * buttonScale
+        } else if (rightBtnType == RightBtnType.CLEARED.name) {
+            btnW = (mRightButton?.width ?: 0) * buttonScale
+            btnH = (mRightButton?.height ?: 0) * buttonScale
+        }
+        if (buttonRightPadding == -1 && btnW != 0f) {
             buttonRightPadding = (btnW / 2).toInt()
         }
         mClearBtnDecRect.set((mWidth - btnW).toInt() - buttonRightPadding, ((mHeight - btnH) / 2).toInt(), mWidth - buttonRightPadding, (mHeight - (mHeight - btnH) / 2).toInt())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (isHaveClearButton()) {
+        if ((rightBtnType == RightBtnType.TOGGLE_PASSWORD.name || rightBtnType == RightBtnType.TOGGLE.name)
+                || (isHaveClearButton() && rightBtnType == RightBtnType.CLEARED.name)) {
             when (event?.action) {
                 MotionEvent.ACTION_UP -> {
                     if (event.x - mClearBtnDecRect.left >= 0) {
-                        OnClearListen()
-                        setText("")
+                        when (rightBtnType) {
+                            RightBtnType.TOGGLE_PASSWORD.name -> //点击切换密码模式
+                                toggleAction(false)
+                            RightBtnType.CLEARED.name -> {//清除按钮模式
+                                OnRightClickListen()
+                                setText("")
+                            }
+                            RightBtnType.TOGGLE.name -> //点击切换响应模式
+                                toggleAction(true)
+                        }
                     }
                 }
             }
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun toggleAction(onlyToggle: Boolean) {
+        if (!onlyToggle && isTogglePasswordMode()) {
+            transformationMethod = if (toggleValue)
+                PasswordTransformationMethod
+                        .getInstance()
+            else
+                HideReturnsTransformationMethod.getInstance()
+            setSelection(text.length)
+        }
+        OnRightToggledListen(toggleValue)
+        toggleValue = !toggleValue
     }
 
     private fun isHaveClearButton(): Boolean {

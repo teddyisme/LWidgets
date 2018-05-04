@@ -13,9 +13,11 @@ class MainActivity : AppCompatActivity() {
 
         paddingview.setInputListens({ s: String, s1: String -> Log.d(TAG1, "s$s  s1:$s1") })
 
-        paddingview.setOnClearListens({
+        paddingview.setOnRightListens({
             Log.d(TAG1, "clear")
         })
+//        paddingview.setOnRightToggleListens { checked: Boolean -> Log.d(TAG1, "s$checked") }
+
         btn.setOnClickListener { Log.d(TAG1, paddingview.getContentString()) }
     }
 }

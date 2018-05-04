@@ -4,9 +4,12 @@
     <declare-styleable name="LEdiTextView">
         <attr name="LPaddingViewType" format="string" />
         <attr name="LPaddingViewSpacingNumber" format="string" />
-        <attr name="clearButtonShowType" format="string" />
-        <attr name="clearButtonDrawable" format="reference" />
-        <attr name="clearButtonRightPadding" format="dimension" />
-        <attr name="clearButtonImageScale" format="float" />
+        <attr name="rightButtonShowType" format="string" />
+        <attr name="rightButtonType" format="string" />
+        <attr name="rightButtonDrawable" format="reference" />
+        <attr name="rightToggleDrawableDefault" format="reference" />
+        <attr name="rightToggleDrawableChecked" format="reference" />
+        <attr name="rightButtonRightPadding" format="dimension" />
+        <attr name="rightButtonImageScale" format="float" />
     </declare-styleable>
 </resources>
