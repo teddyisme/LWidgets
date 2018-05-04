@@ -9,6 +9,7 @@
 - 可设置空格格式
 - 右边按钮的设置
 - 右边按钮模式，有清除按钮模式，切换密码明文模式
+- 右侧按钮显示模式
 ```
 <lixs.com.lwidgetslib.LEditedView
         android:id="@+id/paddingview"
