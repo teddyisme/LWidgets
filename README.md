@@ -30,6 +30,7 @@ LPaddingViewSpacingNumber | 添加空格 | 表示隔几个数字添加空格
 clearButtonDrawable | 清除按钮 | 清除按钮图片
 clearButtonImageScale | 清除按钮缩放比例| 缩放比例float值
 clearButtonShowType | 清除按钮显示方式 | NEVER \ ALWAYS \   INPUTTING
+clearButtonRightPadding|清除按钮距离右边的距离|dp
 > 方法
 
 ```
