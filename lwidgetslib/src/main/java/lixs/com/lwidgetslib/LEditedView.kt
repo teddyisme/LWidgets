@@ -157,13 +157,11 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         val sblength = lstr.length
         when (lType) {
             SpacingType.TEL.name -> {
-//                if (sblength > 3 && lstr[3] != ' ') {
-//                    lstr.insert(3, ' ')
-//                }
-                for (i in 0..sblength) {
-                    if ((i == 4 || (i > 4 && i % 5 == 0)) && lstr[i - 1] != ' ') {
-                        lstr.insert(i - 1, ' ')
-                    }
+                if (sblength > 3 && lstr[3] != ' ') {
+                    lstr.insert(3, ' ')
+                }
+                if (sblength > 8 && lstr[8] != ' ') {
+                    lstr.insert(8, ' ')
                 }
             }
             SpacingType.BANKCODE.name -> {
@@ -246,7 +244,7 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         val namespace = "http://schemas.android.com/apk/res/android"
         val maxLength = attrs?.getAttributeIntValue(namespace, "maxLength", -1) ?: -1
         ta.recycle()
-        if (maxLength > -1) {
+        if (maxLength > -1 || lType == SpacingType.TEL.name) {
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(getMaxLenght(maxLength)))
         }
 
@@ -261,10 +259,7 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
         var max = maxLength
         when (lType) {
             SpacingType.TEL.name -> {
-                max++
-                max += (maxLength - 3) / 4
-//                if ((maxLength - 3) % 4 == 0)
-//                    max--
+                max = 13
             }
             SpacingType.BANKCODE.name -> {
                 max += maxLength / 4
