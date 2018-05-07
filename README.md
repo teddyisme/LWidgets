@@ -10,20 +10,17 @@
 - 右边按钮的设置
 - 右边按钮模式，有清除按钮模式，切换密码明文模式
 ```
-<lixs.com.lwidgetslib.LEditedView
+  <lixs.com.lwidgetslib.LEditedView
         android:id="@+id/paddingview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="numberPassword"
-        android:maxLength="11"
+        android:inputType="number"
         app:LPaddingViewType="TEL"
         app:rightButtonDrawable="@mipmap/ico_circle_close"
         app:rightButtonImageScale="1"
         app:rightButtonRightPadding="12dp"
         app:rightButtonShowType="INPUTTING"
-        app:rightButtonType="TOGGLE_PASSWORD"
-        app:rightToggleDrawableChecked="@mipmap/icon_eye_on"
-        app:rightToggleDrawableDefault="@mipmap/icon_eye_off" />
+        app:rightButtonType="CLEARED" />
 ```
 > 属性
 
