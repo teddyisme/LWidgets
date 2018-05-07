@@ -2,7 +2,7 @@
 整理的在工作中使用的小组件库，采用kotlin编码。
 
 ### 使用
-> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.4'
+> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.5'
 
 #### 1、LEditedView
 - 输入时添加电话、银行卡空格
