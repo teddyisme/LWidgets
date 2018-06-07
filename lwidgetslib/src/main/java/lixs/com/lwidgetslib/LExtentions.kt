@@ -15,42 +15,41 @@ import android.widget.TextView
  * @author  XinSheng
  * @date 2018/6/7
  */
-class LExtentions {
-    /**
-     * 设置颜色和点击事件
-     */
-    fun TextView.setSpans(colorString: MutableList<String>?
-                          , colors: MutableList<Int>? = null
-                          , clicksEnable: Boolean? = false
-                          , clicksActions: ((Int) -> Unit)? = {}) {
 
-        colorString?.withIndex()?.forEach { (index, value) ->
-            val span = SpannableString(value)
-            if (!(colors == null || !clicksEnable!!)) {
-                span.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, colors[index])),
-                        0, value.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-            }
-            if (clicksEnable!!) {
-                val clickableSpan = object : ClickableSpan() {
-                    override fun onClick(p0: View?) {
-                        if (clicksActions != null) {
-                            clicksActions(index)
-                        }
-                    }
+/**
+ * 设置颜色和点击事件
+ */
+fun TextView.setSpans(colorString: MutableList<String>?
+                      , colors: MutableList<Int>? = null
+                      , clicksEnable: Boolean? = false
+                      , clicksActions: ((Int) -> Unit)? = {}) {
 
-                    override fun updateDrawState(ds: TextPaint?) {
-                        super.updateDrawState(ds)
-                        if (colors != null) {
-                            ds?.color = ContextCompat.getColor(context, colors[index])
-                        }
-                        ds?.isUnderlineText = false
-                        ds?.clearShadowLayer()
+    colorString?.withIndex()?.forEach { (index, value) ->
+        val span = SpannableString(value)
+        if (!(colors == null || !clicksEnable!!)) {
+            span.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, colors[index])),
+                    0, value.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
+        if (clicksEnable!!) {
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(p0: View?) {
+                    if (clicksActions != null) {
+                        clicksActions(index)
                     }
                 }
-                span.setSpan(clickableSpan, 0, value.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                this.movementMethod = LinkMovementMethod.getInstance();
+
+                override fun updateDrawState(ds: TextPaint?) {
+                    super.updateDrawState(ds)
+                    if (colors != null) {
+                        ds?.color = ContextCompat.getColor(context, colors[index])
+                    }
+                    ds?.isUnderlineText = false
+                    ds?.clearShadowLayer()
+                }
             }
-            this.append(span)
+            span.setSpan(clickableSpan, 0, value.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            this.movementMethod = LinkMovementMethod.getInstance();
         }
+        this.append(span)
     }
 }
