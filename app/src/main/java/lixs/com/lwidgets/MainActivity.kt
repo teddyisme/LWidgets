@@ -18,6 +18,12 @@ class MainActivity : AppCompatActivity() {
         })
 //        paddingview.setOnRightToggleListens { checked: Boolean -> Log.d(TAG1, "s$checked") }
 
-        btn.setOnClickListener { Log.d(TAG1, paddingview.getContentString()) }
+        btn.setOnClickListener {
+
+
+            Log.d(TAG1, paddingview.getContentString())
+
+
+        }
     }
 }

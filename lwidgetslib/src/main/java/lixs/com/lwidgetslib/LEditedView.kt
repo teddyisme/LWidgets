@@ -267,9 +267,11 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
                     max--
             }
             else -> {
-                max += (maxLength) / spaceNumber
-                if ((maxLength) % spaceNumber == 0)
-                    max--
+                if (spaceNumber != 0) {
+                    max += (maxLength) / spaceNumber
+                    if ((maxLength) % spaceNumber == 0)
+                        max--
+                }
             }
         }
         return max

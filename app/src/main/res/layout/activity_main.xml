@@ -14,11 +14,31 @@
         android:layout_height="50dp"
         android:inputType="number"
         app:LPaddingViewType="TEL"
+        android:background="@null"
         app:rightButtonDrawable="@mipmap/ico_circle_close"
         app:rightButtonImageScale="1"
         app:rightButtonRightPadding="12dp"
         app:rightButtonShowType="INPUTTING"
         app:rightButtonType="CLEARED" />
+
+    <lixs.com.lwidgetslib.LEditedView
+        android:id="@+id/oldPwdView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:hint="当前交易密码"
+        android:background="@null"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:paddingLeft="48dp"
+        android:paddingStart="48dp"
+        app:rightButtonImageScale="1.3"
+        app:rightButtonRightPadding="40dp"
+        app:rightButtonShowType="ALWAYS"
+        app:rightButtonType="TOGGLE_PASSWORD"
+        app:rightToggleDrawableChecked="@mipmap/icon_eye_on"
+        app:rightToggleDrawableDefault="@mipmap/icon_eye_off" />
+
 
     <Button
         android:id="@+id/btn"

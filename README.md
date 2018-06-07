@@ -2,7 +2,7 @@
 整理的在工作中使用的小组件库，采用kotlin编码。
 
 ### 使用
-> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.5'
+> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.0.9'
 
 #### 1、LEditedView
 - 输入时添加电话、银行卡空格
@@ -55,6 +55,16 @@ setOnClearListens()
 ```
 setOnRightToggleListens()
 按钮切换监听
+```
+#### 2、一些扩展
+> texview 添加颜色和点击事件的文字（封装StringSpan）
+
+```
+ textview.setSpans(mutableListOf("《注册协议1》", "《注册协议2》", "《注册协议3》"),
+                mutableListOf(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary),
+                true, {
+            toast("---->$it")
+        })
 ```
 > 简单使用
 
