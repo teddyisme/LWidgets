@@ -26,7 +26,7 @@ fun TextView.setSpans(colorString: MutableList<String>?
 
     colorString?.withIndex()?.forEach { (index, value) ->
         val span = SpannableString(value)
-        if (!(colors == null || !clicksEnable!!)) {
+        if (!(colors == null || clicksEnable!!)) {
             span.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, colors[index])),
                     0, value.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
