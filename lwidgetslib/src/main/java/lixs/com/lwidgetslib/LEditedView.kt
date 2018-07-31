@@ -11,6 +11,9 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
+import android.view.inputmethod.InputConnectionWrapper
 import android.widget.EditText
 
 
@@ -339,5 +342,38 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
 
     private fun isHaveClearButton(): Boolean {
         return clearButtonShowType == ClearButtonShowType.ALWAYS.name || (clearButtonShowType == ClearButtonShowType.INPUTTING.name && length() > 0)
+    }
+
+    override fun onCreateInputConnection(outAttrs: EditorInfo?): InputConnection {
+        return if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD + InputType.TYPE_CLASS_TEXT) {
+            InnerInputConnecttion(super.onCreateInputConnection(outAttrs), false)
+        } else {
+            super.onCreateInputConnection(outAttrs)
+        }
+    }
+
+    class InnerInputConnecttion(target: InputConnection?, mutable: Boolean) : InputConnectionWrapper(target, mutable), InputConnection {
+
+        override fun commitText(text: CharSequence?, newCursorPosition: Int): Boolean {
+            //过滤掉中文
+            if (isChinese(text.toString())) {
+                return false
+            }
+            return super.commitText(text, newCursorPosition)
+        }
+
+        private fun isChinese(c: Char): Boolean {
+            return c.toInt() in 0x4E00..0x9FA5
+        }
+
+        private fun isChinese(str: String?): Boolean {
+            if (str == null)
+                return false
+            for (c in str.toCharArray()) {
+                if (isChinese(c))
+                    return true
+            }
+            return false
+        }
     }
 }

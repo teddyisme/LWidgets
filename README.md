@@ -2,7 +2,7 @@
 整理的在工作中使用的小组件库，采用kotlin编码。
 
 ### 使用
-> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.1.1'
+> implementation 'lixs.com.lwidgetslib:lwidgetslib:1.1.4'
 
 #### 1、LEditedView
 - 输入时添加电话、银行卡空格
@@ -10,6 +10,7 @@
 - 右边按钮的设置
 - 右边按钮模式，有清除按钮模式，切换密码明文模式
 - 右侧按钮显示模式
+- 密码框设置textPassword 过滤中文字符
 ```
   <lixs.com.lwidgetslib.LEditedView
         android:id="@+id/paddingview"
