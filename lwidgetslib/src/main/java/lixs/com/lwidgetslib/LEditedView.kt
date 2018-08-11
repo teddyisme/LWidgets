@@ -225,6 +225,10 @@ open class LEditedView(context: Context?, attrs: AttributeSet?) : EditText(conte
     fun setSpaceType(type: String) {
         lType = type
     }
+    
+    fun isEmail(): Boolean {
+        return deletAllSpac().matches(Regex("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+"))
+    }
 
     init {
         this.addTextChangedListener(textWatcher)

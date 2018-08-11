@@ -57,6 +57,10 @@ setOnClearListens()
 setOnRightToggleListens()
 按钮切换监听
 ```
+```
+isEmail()
+判断是否为电子邮件格式
+```
 #### 2、一些扩展
 > texview 添加颜色和点击事件的文字（封装StringSpan）
 
